@@ -1,23 +1,86 @@
-# The Future in Tech
+# Podcast Feed Generator
 
-<img src="https://raybo.org/tfit-feed/images/artwork.jpg" width="250">
+This repository generates a podcast RSS feed from a YAML definition.
 
-The [Future in Tech](https://go.raybo.org/tfit) is a weekly series powered by [LinkedIn Learning](https://www.linkedin.com/learning/) hosted by Senior Staff Instructor [Ray Villalobos](https://www.linkedin.com/in/planetoftheweb).
+`feed.py` reads `feed.yaml` and produces `podcast.xml`, which can be used as a podcast RSS feed for audio hosting and directories.
 
-You can [watch it on LinkedIn](https://go.raybo.org/tfit-episodes) every Thursday at 2pm ET, 11am PT. The goal of this series is to spark conversations, provide practical tips and resources to help developers work, learn, and tackle challenges related to working in the technology industry.
+## Project Structure
 
-We're talking about Generative AI tools like ChatGPT, Dall-E*2, Hugging Face by talking to some of the leaders delivering the tools, strategies and technologies that make working in technology exciting. We'll discuss how they broke into technology, business strategies, ethical concerns and technical skills.
+- `feed.py` — Python script that converts `feed.yaml` into `podcast.xml`
+- `feed.yaml` — Podcast metadata and episode definitions
+- `podcast.xml` — Generated RSS feed output
+- `audio/` — Episode audio files referenced by the feed
+- `images/` — Artwork and image assets for the podcast
 
-You have a chance to hear from people who are not just talking about, but building the next generation tools like Open AI and leaders who've worked for and with Fortune 500 companies like Microsoft, Google, LinkedIn,  IBM,  Open AI and more.
+## How it Works
 
----
-## More Info
-- [The Future in Tech Page](https://go.raybo.org/tfit)
-- [Episode Guide](https://go.raybo.org/tfit-episodes)
-- [YouTube Playlist](https://go.raybo.org/tfit-youtube)
-- [Podcast Feed - Audio Only](https://go.raybo.org/tfit-feed-audio)
-- [Episode Newsletter](https://go.raybo.org/tfit-newsletter)
+The script loads the YAML file, builds an RSS feed with iTunes podcast tags, and writes the XML output.
 
+The feed metadata includes:
+- podcast title
+- subtitle
+- author
+- description
+- image path
+- language
+- category
+- base link URL
+- episode items
 
-- Links for the tutorial: 
-1. https://help.apple.com/itc/podcasts_connect/#/itcbaf351599
+Each episode item includes:
+- title
+- description
+- publication date
+- duration
+- audio file URL
+- file length
+
+## Requirements
+
+- Python 3.8+ (or newer)
+- `PyYAML` library
+
+Install dependencies:
+
+```bash
+python -m pip install pyyaml
+```
+
+## Generate the Feed
+
+Run the script from the repository root:
+
+```bash
+python feed.py
+```
+
+This creates or updates `podcast.xml` using the values defined in `feed.yaml`.
+
+## Customize Your Podcast
+
+Edit `feed.yaml` to update podcast metadata or add episodes.
+
+- Update `link` to match the published feed base URL
+- Use `/audio/<filename>.mp3` for episode media paths
+- Use `/images/<filename>.jpg` for artwork
+- Ensure `length` matches the actual file size in bytes
+
+## Notes
+
+- `podcast.xml` is generated automatically and should not be edited manually unless needed for testing.
+- Keep audio files in `audio/` and artwork in `images/` so the generated feed references valid URLs.
+
+## CI / GitHub Actions
+
+This repository includes a GitHub Actions workflow at `.github/workflows/main.yml`.
+
+The workflow:
+- runs on every `push`
+- checks out the repository using `actions/checkout@v3`
+- invokes the `russeltjahjadi/podcast-generator@main` action to generate the podcast feed
+
+That means the feed generation is delegated to another repository, `podcast-generator`, which is expected to contain the code or action definition for producing the final RSS feed.
+
+## License
+
+This repository is a simple utility for building a podcast XML feed from YAML source data.
