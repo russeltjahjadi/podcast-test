@@ -1,4 +1,4 @@
-# Podcast Feed Generator
+# Podcast Test
 
 This repository generates a podcast RSS feed from a YAML definition.
 
